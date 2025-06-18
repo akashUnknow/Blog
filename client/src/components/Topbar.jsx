@@ -4,6 +4,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Link } from "react-router-dom";
 import SearchBox from "@/components/SearchBox";
+import { RouteSignin } from "@/helper/RouteName";
 
 const Topbar = () => {
   return (
@@ -17,7 +18,7 @@ const Topbar = () => {
       <div>
         <Button>
           <FaSignInAlt />
-          <Link>
+          <Link to={RouteSignin}>
           Sign In</Link>
         </Button>
       </div>
