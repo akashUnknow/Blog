@@ -3,6 +3,7 @@ import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
+import AuthRoute from './routes/Auth.route.js';
 
 
 dotenv.config();
@@ -15,6 +16,9 @@ app.use(cors({
   origin: process.env.FRONTEND_URL || 'http://localhost:3000',
   credentials: true,
 }));
+
+// route setup
+app.use('/api/auth', AuthRoute);
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,

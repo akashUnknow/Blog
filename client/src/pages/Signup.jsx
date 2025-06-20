@@ -2,7 +2,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { z } from "zod";
 import { Card } from "@/components/ui/card";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { RouteSignin  } from "@/helper/RouteName";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,8 +15,12 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
+import { getEnv } from "@/helper/getEnv";
+import { ShowToast } from "@/helper/showToast";
+
 
 const Signup = () => {
+  const navigate = useNavigate();
   const formSchema = z.object({
     name: z.string().min(3, "Password must be at least 3 characters"),
     email: z.string().email(),
@@ -36,8 +40,28 @@ const Signup = () => {
     },
   });
 
-  function onSubmit(values) {
-    console.log(values);
+  // registation
+  async function onSubmit(values) {
+    try {
+      const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/auth/register`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(values),
+      })
+      const data= await response.json();
+      if (!response.ok) {
+        ShowToast("error", data.message || "Something went wrong");
+        
+      }
+      navigate(RouteSignin);
+      ShowToast("success", "User registered successfully");
+    } catch (error) {
+      ShowToast("error", error.message || "Something went wrong");
+      console.error("Error during registration:", error);
+      
+    }
   }
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100 w-screen">
@@ -79,12 +103,12 @@ const Signup = () => {
               <FormField
                 control={form.control}
                 name="password"
-                type="password"
+                
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your Password" {...field} />
+                      <Input type="password" placeholder="Enter your Password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
@@ -95,12 +119,12 @@ const Signup = () => {
               <FormField
                 control={form.control}
                 name="confirmPassword"
-                type="password"
+                
                 render={({ field }) => (
                   <FormItem>
                     <FormLabel>confirm Password</FormLabel>
                     <FormControl>
-                      <Input placeholder="Enter your password" {...field} />
+                      <Input type="password" placeholder="Enter your password" {...field} />
                     </FormControl>
                     <FormMessage />
                   </FormItem>
