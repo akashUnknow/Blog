@@ -17,7 +17,12 @@ import {
 import { Input } from "@/components/ui/input";
 import { getEnv } from "@/helper/getEnv";
 import { ShowToast } from "@/helper/showToast";
+import { useDispatch } from "react-redux";
+import GoogleLogin from "@/components/GoogleLogin";
+import { setUser } from "@/redux/user/user.slice";
+
 const Signin = () => {
+  const dispatch = useDispatch();
   const navigate = useNavigate();
   const formSchema = z.object({
     email: z.string().email(),
@@ -38,7 +43,7 @@ const Signin = () => {
       const response = await fetch(
         `${getEnv("VITE_API_BASE_URL")}/auth/login`,
         {
-          method: "POST",
+          method: "post",
           headers: {
             "Content-Type": "application/json",
           },
@@ -50,6 +55,7 @@ const Signin = () => {
       if (!response.ok) {
         return ShowToast("error", data.message || "Something went wrong");
       }
+      dispatch(setUser(data.user));
       navigate(RouteIndex);
       ShowToast("success", "User registered successfully");
     } catch (error) {
@@ -61,6 +67,12 @@ const Signin = () => {
     <div className="flex items-center justify-center h-screen bg-gray-100 w-screen">
       <Card className="w-96 p-6 shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign In</h2>
+        <div>
+          <GoogleLogin />
+          <div className="border-1 my-5 flex items-center justify-center ">
+            <span className="absolute bg-white text-sm">OR</span>
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="mb-3">

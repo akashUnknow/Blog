@@ -7,10 +7,13 @@ import { ShowToast } from "@/helper/showToast";
 import { RouteIndex } from "@/helper/RouteName";
 import { useNavigate } from "react-router-dom";
 import { getEnv } from "@/helper/getEnv";
+import { useDispatch } from "react-redux";
+import { setUser } from "@/redux/user/user.slice";
 
 const GoogleLogin = () => {
     const navigate = useNavigate();
   const handleLogin = async () => {
+    const dispatch = useDispatch();
     try {
       const googleResponce = await signInWithPopup(auth, provider);
       const user=googleResponce.user;
@@ -22,7 +25,7 @@ const GoogleLogin = () => {
       const response = await fetch(
         `${getEnv("VITE_API_BASE_URL")}/auth/google-login`,
         {
-          method: "POST",
+          method: "post",
           headers: {
             "Content-Type": "application/json",
           },
@@ -34,6 +37,7 @@ const GoogleLogin = () => {
       if (!response.ok) {
         return ShowToast("error", data.message || "Something went wrong");
       }
+      dispatch(setUser(data.user));
       navigate(RouteIndex);
       ShowToast("success", "User registered successfully");
     } catch (error) {
