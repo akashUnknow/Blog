@@ -74,3 +74,56 @@ export const Login = async (req, res, next) => {
     next(handleError(500, error.message || "Internal Server Error"));
   }
 };
+
+
+export const GoogleLogin = async (req, res, next) => {
+  try {
+    const {name, email, avatar } = req.body;
+    let user;
+     user = await User.findOne({ email });
+    if (!user) {
+      const password = Math.random().toString(36).slice(-8); // Generate a random password
+      const hashedPassword = bcrypt.hashSync(password, 10); // Hash the password
+      const newUser=new User({
+        name,
+        email,
+        password: hashedPassword, // Use the hashed password
+        avatar,
+      });
+      user = await newUser.save();
+      // create new user
+    }
+    
+    // Generate token logic here (not implemented in this snippet)
+    const token = jwt.sign(
+      {
+        _id: user._id,
+        name: user.name,
+        email: user.email,
+        avatar: user.avatar,
+      },
+      process.env.JWT_SECRET
+    );
+
+    res.cookie("access_token", token, {
+      httpOnly: true,
+      secure: process.env.NODE_ENV === "production",
+      sameSite: process.env.NODE_ENV === "production" ? "None" : "strict",
+      path: "/",
+    });
+    const newUser=user.toObject({getters: true});
+    delete newUser.password; // Remove password from the user object before sending it in the response
+
+    res.status(200).json({
+      success: true,
+      message: "User logged in successfully",
+      newUser,
+    });
+
+    res.status(200).json({
+      success: true,
+    });
+  } catch (error) {
+    next(handleError(500, error.message || "Internal Server Error"));
+  }
+};

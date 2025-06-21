@@ -17,6 +17,7 @@ import {
 import { Input } from "@/components/ui/input";
 import { getEnv } from "@/helper/getEnv";
 import { ShowToast } from "@/helper/showToast";
+import GoogleLogin from "@/components/GoogleLogin";
 
 
 const Signup = () => {
@@ -52,7 +53,7 @@ const Signup = () => {
       })
       const data= await response.json();
       if (!response.ok) {
-        ShowToast("error", data.message || "Something went wrong");
+        return ShowToast("error", data.message || "Something went wrong");
         
       }
       navigate(RouteSignin);
@@ -67,6 +68,12 @@ const Signup = () => {
     <div className="flex items-center justify-center h-screen bg-gray-100 w-screen">
       <Card className="w-96 p-6 shadow-lg">
         <h2 className="text-2xl font-bold mb-6 text-center">Sign Up</h2>
+        <div>
+          <GoogleLogin/>
+          <div className="border-1 my-5 flex items-center justify-center ">
+            <span className="absolute bg-white text-sm">OR</span>
+          </div>
+        </div>
         <Form {...form}>
           <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
             <div className="mb-3">

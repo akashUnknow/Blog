@@ -33,28 +33,29 @@ const Signin = () => {
     },
   });
 
- async function onSubmit(values) {
+  async function onSubmit(values) {
     try {
-          const response = await fetch(`${getEnv("VITE_API_BASE_URL")}/auth/login`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-            },
-            credentials: "include",
-            body: JSON.stringify(values),
-          })
-          const data= await response.json();
-          if (!response.ok) {
-            ShowToast("error", data.message || "Something went wrong");
-            
-          }
-          navigate(RouteIndex);
-          ShowToast("success", "User registered successfully");
-        } catch (error) {
-          ShowToast("error", error.message || "Something went wrong");
-          console.error("Error during registration:", error);
-          
+      const response = await fetch(
+        `${getEnv("VITE_API_BASE_URL")}/auth/login`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          credentials: "include",
+          body: JSON.stringify(values),
         }
+      );
+      const data = await response.json();
+      if (!response.ok) {
+        return ShowToast("error", data.message || "Something went wrong");
+      }
+      navigate(RouteIndex);
+      ShowToast("success", "User registered successfully");
+    } catch (error) {
+      ShowToast("error", error.message || "Something went wrong");
+      console.error("Error during registration:", error);
+    }
   }
   return (
     <div className="flex items-center justify-center h-screen bg-gray-100 w-screen">
@@ -100,7 +101,12 @@ const Signin = () => {
               </Button>
               <div className="text-center mt-4 flex items-center justify-center gap-2">
                 <p>dont&apos;t have account? </p>
-                <Link to={RouteSignup} className="text-blue-500 hover:underline ">Sign Up</Link>
+                <Link
+                  to={RouteSignup}
+                  className="text-blue-500 hover:underline "
+                >
+                  Sign Up
+                </Link>
               </div>
             </div>
           </form>
