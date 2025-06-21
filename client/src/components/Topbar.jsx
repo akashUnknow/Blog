@@ -26,8 +26,8 @@ import { getEnv } from "@/helper/getEnv";
 
 const Topbar = () => {
   const dispatch = useDispatch();
+  const navigate = useNavigate();
   const handleLogoout = async () => {
-    const navigate = useNavigate();
     try {
       const response = await fetch(
         `${getEnv("VITE_API_BASE_URL")}/auth/logout`,

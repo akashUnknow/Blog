@@ -19,6 +19,7 @@ app.use(cors({
 
 // route setup
 app.use('/api/auth', AuthRoute);
+// test api
 
 mongoose.connect(process.env.MONGODB_URI, {
   useNewUrlParser: true,
