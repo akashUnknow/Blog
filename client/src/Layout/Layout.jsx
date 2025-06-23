@@ -13,7 +13,7 @@ const Layout = () => {
       <AppSidebar />
       {/* <AppTopbar/> */}
       <main className=" w-full">
-        <div className="w-full min-h-[calc(100vh-40px)]">
+        <div className="w-full min-h-[calc(100vh-40px)] pt-28 px-8">
 
         <Outlet />
         </div>

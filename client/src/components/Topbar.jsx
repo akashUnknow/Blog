@@ -4,7 +4,7 @@ import { FaSignInAlt } from "react-icons/fa";
 import { Button } from "@/components/ui/button";
 import { Link, useNavigate } from "react-router-dom";
 import SearchBox from "@/components/SearchBox";
-import { RouteIndex, RouteSignin } from "@/helper/RouteName";
+import { RouteIndex, RouterProfile, RouteSignin } from "@/helper/RouteName";
 import { useDispatch, useSelector } from "react-redux";
 import { FaRegUser } from "react-icons/fa";
 import { CiSquarePlus } from "react-icons/ci";
@@ -51,7 +51,7 @@ const Topbar = () => {
   };
 
   const user = useSelector((state) => state.user);
-  // user.isLoggedIn = true; // For testing purposes, remove this line in production
+  user.isLoggedIn = true; // For testing purposes, remove this line in production
   return (
     <div className="flex justify-between items-center h-16 fixed w-full z-20 bg-white shadow-md px-5 border-b border-gray-200">
       <div>
@@ -81,14 +81,14 @@ const Topbar = () => {
               <DropdownMenuLabel>
                 <p className="text-sm">{user.user.email}</p>
               </DropdownMenuLabel>
-              <DropdownMenuSeparator />
-              <DropdownMenuItem asChild>
-                <Link to="">
+              <DropdownMenuSeparator  />
+              <DropdownMenuItem asChild className="cursor-pointer">
+                <Link to={RouterProfile}>
                   <FaRegUser />
                   Profile
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem asChild>
+              <DropdownMenuItem asChild className="cursor-pointer">
                 <Link to="">
                   <CiSquarePlus />
                   Create Blog
@@ -96,7 +96,7 @@ const Topbar = () => {
               </DropdownMenuItem>
               <DropdownMenuSeparator />
 
-              <DropdownMenuItem  onClick={handleLogoout}>
+              <DropdownMenuItem  onClick={handleLogoout} className="cursor-pointer">
                 <IoIosLogOut color="red" />
                 Logout
               </DropdownMenuItem>

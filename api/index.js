@@ -1,9 +1,10 @@
-import express from 'express';
+import express, { application } from 'express';
 import dotenv from 'dotenv';
 import cors from 'cors';
 import cookieParser from 'cookie-parser';
 import mongoose from 'mongoose';
 import AuthRoute from './routes/Auth.route.js';
+import UserRoute from './routes/User.route.js';
 
 
 dotenv.config();
@@ -19,6 +20,7 @@ app.use(cors({
 
 // route setup
 app.use('/api/auth', AuthRoute);
+app.use('/api/user', UserRoute);
 // test api
 
 mongoose.connect(process.env.MONGODB_URI, {
