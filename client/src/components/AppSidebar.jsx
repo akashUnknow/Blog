@@ -14,6 +14,7 @@ import logo from "@/assets/images/logo-white.png";
 import { BiSolidCategory } from "react-icons/bi";
 import { FaComments,FaUserAlt ,FaBlog,FaHome} from "react-icons/fa";
 import { GoDotFill } from "react-icons/go";
+import { RouterCategoriesDetailes } from "@/helper/RouteName";
 
 
 export function AppSidebar() {
@@ -79,7 +80,7 @@ export function AppSidebar() {
             <SidebarMenuItem>
               <SidebarMenuButton>
                 <GoDotFill />
-                <Link to="">categories item</Link>
+                <Link to={RouterCategoriesDetailes}>categories item</Link>
               </SidebarMenuButton>
             </SidebarMenuItem>
           </SidebarMenu>

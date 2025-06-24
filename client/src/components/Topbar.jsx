@@ -51,7 +51,7 @@ const Topbar = () => {
   };
 
   const user = useSelector((state) => state.user);
-  user.isLoggedIn = true; // For testing purposes, remove this line in production
+  // user.isLoggedIn = true; // For testing purposes, remove this line in production
   return (
     <div className="flex justify-between items-center h-16 fixed w-full z-20 bg-white shadow-md px-5 border-b border-gray-200">
       <div>

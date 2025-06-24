@@ -25,6 +25,7 @@ import Loading from "@/components/Loading";
 
 const Profile = () => {
   const [filePreview, setFilePreview] = useState(null);
+  const [file, setFile] = useState();
   const user = useSelector((state) => state.user);
   const {
     data: userData,
@@ -71,12 +72,15 @@ const Profile = () => {
 
   async function onSubmit(values) {
     try {
+      const formData = new FormData();
+      formData.append("file", file);
+      formData.append("data", JSON.stringify(values));
       const response = await fetch(
         `${getEnv("VITE_API_BASE_URL")}/auth/user/update/${user._id}`,
         {
-          method: "post",
+          method: "put",
           credentials: "include",
-          body: JSON.stringify(values),
+          body: formData
         }
       );
       const data = await response.json();
@@ -85,6 +89,7 @@ const Profile = () => {
       }
       dispatch(setUser(data.user));
       ShowToast("success", "User registered successfully");
+      
     } catch (error) {
       ShowToast("error", error.message || "Something went wrong");
       console.error("Error during registration:", error);
@@ -98,6 +103,7 @@ const Profile = () => {
     }
     const file = acceptedFiles[0];
     const preview=URL.createObjectURL(file);
+    setFile(file);
     setFilePreview(preview);
   }
 
